@@ -1,2 +1,5 @@
 website/__pycache__
 website/database.db
+src/controllers/__pycache__/
+src/models/__pycache__/
+src/website/__pycache__/

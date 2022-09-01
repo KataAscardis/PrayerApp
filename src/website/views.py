@@ -3,7 +3,7 @@ from flask_login import login_required, current_user
 from models.models import Note
 from website import db
 import json
-import requests
+from controllers.BibleController import BibleController
 
 views = Blueprint('views', __name__)
 
@@ -11,11 +11,7 @@ views = Blueprint('views', __name__)
 @views.route('/', methods=['GET', 'POST'])
 @login_required
 def home():
-    url = "https://beta.ourmanna.com/api/v1/get?format=json&order=daily"
-    headers = {"Accept": "application/json"}
-    response = requests.get(url, headers=headers)
-    
-    print('\n',type(response.text),response.text)
+
     if request.method == 'POST':
         note = request.form.get('note')
 
