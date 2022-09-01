@@ -1,8 +1,9 @@
-from flask import Blueprint, render_template, request, flash, jsonify
+from flask import Blueprint, render_template, request, flash, jsonify, redirect, url_for
 from flask_login import login_required, current_user
 from models.models import Note
 from website import db
 import json
+import requests
 
 views = Blueprint('views', __name__)
 
@@ -10,6 +11,11 @@ views = Blueprint('views', __name__)
 @views.route('/', methods=['GET', 'POST'])
 @login_required
 def home():
+    url = "https://beta.ourmanna.com/api/v1/get?format=json&order=daily"
+    headers = {"Accept": "application/json"}
+    response = requests.get(url, headers=headers)
+    
+    print('\n',type(response.text),response.text)
     if request.method == 'POST':
         note = request.form.get('note')
 
@@ -20,6 +26,7 @@ def home():
             db.session.add(new_note)
             db.session.commit()
             flash('Note added!', category='success')
+            return redirect(url_for('views.home'))
     notes = Note.query.all()
     return render_template("home.html",notes = notes, user=current_user)
 
